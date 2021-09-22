@@ -1,0 +1,46 @@
+1)
+SELECT highschooler.name
+FROM highschooler
+JOIN friend
+ON(highschooler.ID=friend.ID1)
+WHERE friend.ID2 = ANY(
+SELECT highschooler.ID
+FROM highschooler
+WHERE name LIKE 'Gabriel')
+
+2)
+SELECT h1.name,h1.grade ,h2.name,h2.grade
+FROM highschooler h1, highschooler h2
+JOIN likes L1,likes L2
+WHERE(h1.ID=L1.ID1 AND h2.ID=L1.ID2) AND (h2.ID=L2.ID1 AND h1.ID=L2.ID2) AND H1.name < H2.name
+ORDER BY h1.name,h2.name
+
+4)SELECT (COUNT(*)-COUNT(DISTINCT name)) AS "Difference"
+FROM highschooler
+
+
+5)SELECT highschooler.name,highschooler.grade
+FROM highschooler
+WHERE highschooler.ID IN 
+
+(SELECT likes.ID2
+FROM likes
+GROUP BY ID2
+HAVING COUNT(likes.ID2)>=2)
+
+SELECT name, grade
+FROM Highschooler
+JOIN Likes
+ON Highschooler.ID = Likes.ID2
+GROUP BY ID2
+HAVING COUNT(*) > 1
+
+
+
+9)CREATE TRIGGER after_update_hs
+AFTER UPDATE
+ON highschooler FOR EACH ROW
+BEGIN
+INSERT INTO daten
+VALUES (NOW());
+END

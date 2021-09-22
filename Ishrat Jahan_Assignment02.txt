@@ -1,0 +1,9 @@
+                                   Lab-Week 2(Lec-1)
+Activity 1)SELECT employees.Last_Name,employees.Salary AS "Weekly Salary",employees.Department_Id
+           FROM employees;
+
+
+                                   Lab-Week 2(Lec-1)
+
+Activity 1) SELECT CONCAT(employees.Last_Name, " , ", employees.Job_Id) AS "Employee and Title"
+            FROM employees;

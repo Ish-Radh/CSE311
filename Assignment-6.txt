@@ -1,0 +1,39 @@
+WEEK-6 (Lecture-1)
+
+1)
+SELECT employees.Last_Name, employees.Hire_Date  
+FROM employees  
+WHERE Department_id =  
+( SELECT Department_id  
+FROM employees  
+WHERE Last_Name LIKE 'Zlotkey')  
+ORDER BY Last_Name ASC
+LIMIT 2
+
+2)
+SELECT employees.Employee_Id,employees.Last_Name, ROUND(employees.Salary,0) AS "Salary"
+FROM employees  
+WHERE SALARY >
+(SELECT AVG(Salary)
+FROM employees)
+ORDER BY Salary ASC
+
+WEEK-6 (Lecture-2)
+
+1)
+SELECT employees.Last_Name, ROUND(employees.salary,0) AS "Salary"
+FROM employees
+WHERE employees.Manager_Id=(
+SELECT employees.Employee_Id 
+FROM employees
+WHERE employees.Last_Name="King")
+
+2)
+SELECT employees.Employee_Id, employees.Last_Name, ROUND(SALARY,0) AS "Salary"
+FROM employees
+WHERE Salary >
+(SELECT AVG(Salary)
+From employees)
+AND department_id IN (SELECT Department_id
+FROM employees
+WHERE Last_Name LIKE '%u%')

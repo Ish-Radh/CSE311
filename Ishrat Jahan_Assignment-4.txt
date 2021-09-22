@@ -1,0 +1,45 @@
+WEEK-4(Lecture-1)
+
+1)
+SELECT employees.Last_Name,employees.Department_Id,departments.Department_Name
+FROM employees,departments
+WHERE employees.Department_Id=departments.Department_id
+
+2)
+SELECT employees.Last_Name,departments.Department_Name,locations.Location_id,locations.City
+FROM employees
+JOIN departments
+ON(employees.Department_Id=departments.Department_id)
+JOIN locations
+ON(departments.Location_id=locations.Location_id)
+WHERE employees.Comission_pct IS NOT NULL
+                                    
+
+WEEK-4(Lecture-2)
+
+1)
+SELECT employees.Last_Name, jobs.Job_Title, employees.Department_Id, departments.Department_Name
+FROM employees 
+JOIN departments 
+ON (employees.Department_Id = departments.Department_Id)
+JOIN jobs
+ON (employees.Job_Id = jobs.job_id)
+JOIN locations 
+ON (departments.Location_id = locations.Location_Id)
+WHERE locations.City = "Toronto" OR employees.Job_Id IS NULL
+
+2)
+SELECT employees.Last_Name,departments.Department_Name,locations.Location_id,locations.City
+FROM employees
+LEFT JOIN departments 
+ON(employees.Department_Id=departments.Department_id )
+LEFT JOIN locations
+ON(departments.Location_id=locations.Location_id)
+WHERE employees.Comission_pct IS NOT NULL
+ORDER BY employees.Salary DESC, employees.Comission_pct DESC
+
+3)
+SELECT emp.Last_Name AS "Employee", emp.Employee_ID AS "EMP#", manager.Last_Name AS "Manager", manager.Employee_ID AS "Mgr#"
+FROM employees emp
+LEFT JOIN employees manager
+ON(emp.Manager_Id=manager.Employee_Id)

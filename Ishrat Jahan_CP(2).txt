@@ -1,0 +1,11 @@
+1)
+SELECT departments.Department_Name
+FROM employees
+JOIN departments
+ON(employees.Department_Id=departments.Department_id)
+JOIN locations
+ON(departments.Location_id=locations.Location_id)
+WHERE employees.Last_Name NOT LIKE "Zlotkey"
+GROUP BY employees.Department_Id
+HAVING COUNT(employees.Department_Id)=3
+ORDER BY locations.Postal_Code ASC

@@ -1,0 +1,56 @@
+Lecture-1
+Activity:1
+
+Creating table:
+
+CREATE TABLE EMC(
+    Employee_Id INT(6),
+    LAST_NAME VARCHAR(25),
+    SALARY DOUBLE(8,2),
+    MANAGER_ID INT(6))
+
+INSERTING FIVE ROWS TO THE TABLE:
+
+INSERT INTO emc(Employee_Id,LAST_NAME,SALARY,MANAGER_ID)
+VALUES(301,'JIMIN',34000,100),(302,'JEN',12000,105),(303,'MARK',78000,106),(304,'KAI',43000,108),(305,'JIN',45000,109)
+
+Making employee id the primary key:
+ALTER TABLE emc 
+ADD PRIMARY KEY(Employee_Id)
+
+Merging the two tables: 
+REPLACE 
+INTO 
+emc
+SELECT Employee_Id, LAST_NAME, SALARY, MANAGER_ID
+FROM employees
+
+
+Lecture-2
+Activity:1
+
+Table Creation:
+CREATE TABLE EMP(
+    ID INT(7),
+    LAST_NAME VARCHAR(25),
+    FIRST_NAME VARCHAR(25),
+    DEPT_ID INT(7))
+
+a)
+ALTER TABLE emp
+MODIFY COLUMN LAST_NAME VARCHAR(200)
+
+b)
+CREATE TABLE EMPLOYEES2
+SELECT employees.Employee_Id AS ID, employees.First_Name AS FIRST_NAME, employees.Last_Name AS LAST_NAME, employees.Salary AS SALARY, employees.Department_id AS DEPT_ID
+FROM employees
+
+c)
+DROP TABLE emp
+
+d)
+RENAME TABLE employees2 TO EMP
+
+e)
+ALTER TABLE emp
+DROP COLUMN FIRST_NAME

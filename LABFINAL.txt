@@ -1,0 +1,146 @@
+1)
+SELECT ta.Name
+FROM ta 
+JOIN  ta_info 
+ON(ta.ID = ta_info.ID)
+WHERE ta.ID IN
+(SELECT ID2 
+FROM friend
+WHERE ID1 IN
+ (SELECT ID
+ FROM ta
+ WHERE ta.Name = 'Ananotara')
+ )
+ AND
+ ta.ID IN        
+ (SELECT ID1
+ FROM Friend
+ WHERE ID2 IN
+ (SELECT ID FROM 
+ ta WHERE 
+ Name = 'Ananotara'))
+ AND ta_info.Position = 'GA'
+
+2)
+SELECT  ta.Name,ta.GPA 
+FROM ta 
+WHERE 
+(SELECT  COUNT(*)
+ FROM review_ta 
+LEFT JOIN ta_info
+ON( review_ta.ID1 = ta_info.ID )
+WHERE (review_ta.ID2 = ta.ID) AND (ta_info.Position = 'GA' > 1))
+
+3)
+SELECT CONCAT(
+(SELECT ta.Name 
+FROM ta 
+WHERE id = rt1.ID1
+limit 1),
+" REVIEWS ",
+(SELECT ta.Name 
+FROM ta 
+WHERE id = rt1.ID2 
+ limit 1),
+ ", AND ",
+(SELECT ta.Name
+ FROM ta 
+ WHERE id = rt1.ID2
+limit 1),
+" REVIEWS ",
+(SELECT ta.Name 
+ FROM ta
+ WHERE id = rt2.ID2
+ limit 1)
+) AS "MESSAGE"
+FROM review_ta rt1 
+LEFT JOIN review_ta rt2
+ON(rt1.ID2=rt2.ID1 where rt1.ID1<>rt2.ID2)
+WHERE ta_info.Position='GA'
+
+4)
+SELECT ta.Name,ta.Semester
+FROM ta
+WHERE ta.GPA <
+(SELECT MAX(GPA)
+ FROM ta
+)
+ORDER BY DESC
+LIMIT 3
+
+5)
+SELECT  AVG(count_f) AS 'AVG(A)'
+FROM
+(SELECT  COUNT(*) AS "count_f"
+FROM friend 
+GROUP by ID1) as TA_friend
+
+6)
+SELECT COUNT(friend.ID2) AS "Total"
+FROM friend
+WHERE friend.ID1 IN (
+SELECT friend.ID2
+FROM friend 
+WHERE friend.ID1 IN 
+(SELECT ta.ID
+FROM ta 
+ WHERE name='Chandra')
+)
+and friend.ID1 NOT IN 
+(SELECT ta.ID
+FROM ta 
+WHERE name='Chandra')
+
+7)
+ALTER TABLE review_ta
+ADD CONSTRAINT fk_review_ta_to_ta
+FOREIGN key(ID1)
+REFERENCES TA(ID)
+ON DELETE SET null
+ON UPDATE SET null
+
+8)
+a)UPDATE ta
+SET Semester=Semester+1
+
+b)
+DELIMITER $$
+CREATE TRIGGER Delete_rows
+AFTER UPDATE 
+ON ta FOR EACH ROW
+BEGIN
+DELETE FROM ta_info 
+WHERE ID=(
+SELECT ID 
+FROM ta 
+WHERE (GPA<3.3 AND ta_info.Position='UGA') OR (GPA<3.5 AND ta_info.Position='GA';
+END$$
+DELIMITER$$
+
+
+
+9)
+UPDATE ta_info,ta
+SET ta_info.Position="GA_N"
+WHERE ta.Semester IN (12,13) AND ta.GPA >=3.5 AND ta_info.Position NOT IN ("GA")
+
+10)
+a)
+CREATE PROCEDURE difference_with_highest_gpa(Inserted_id INT,OUT difference INT)
+BEGIN
+DECLARE max_gpa int;
+DECLARE Inserted_gpa int;
+DECLARE difference int ;
+SELECT MAX(GPA)
+INTO max_gpa 
+FROM TA;
+SELECT GPA 
+INTO Inserted_gpa
+FROM TA WHERE ID=Inserted_id;
+SET difference = max_gpa-I_gpa
+END$$
+DELIMITER $$
+
+b)
+CALL difference_with_highest_gpa(316,@difference);
+SELECT @difference;

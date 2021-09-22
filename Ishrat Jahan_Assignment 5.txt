@@ -1,0 +1,38 @@
+WEEK-5(Lecture-1)
+
+1)
+SELECT ROUND(MAX(Salary),0) AS "Maximun",ROUND(MIN(Salary),0) AS "Minimum",ROUND(SUM(Salary),0) AS "Sum",ROUND(AVG(Salary),0) AS "Average"
+From employees
+
+2)
+SELECT employees.Job_id,ROUND(MAX(Salary),0) AS "Maximun",ROUND(MIN(Salary),0) AS "Minimum",ROUND(SUM(Salary),0) AS "Sum",ROUND(AVG(Salary),0) AS "Average"
+From employees
+JOIN jobs
+ON(employees.Job_Id=jobs.Job_id)
+GROUP BY employees.Job_id
+
+WEEK-5(Lecture-2)
+
+1)
+SELECT employees.Job_Id,COUNT(*)
+From employees
+JOIN jobs
+WHERE employees.Job_Id=jobs.Job_id
+GROUP BY employees.Job_Id
+
+2)
+SELECT employees.Manager_Id,ROUND(MIN(Salary),0) AS "MIN(SALARY)"
+From employees
+WHERE employees.Manager_Id IS NOT NULL
+GROUP BY employees.Manager_Id
+HAVING MIN(Salary)>6000
+ORDER BY MIN(Salary) DESC
+
+Homework:
+SELECT departments.Department_Name AS "Name",locations.City AS "Location",COUNT(employees.Department_id) AS "Number of People",ROUND(AVG(Salary),2) AS "Salary"
+From employees
+RIGHT JOIN departments
+ON(employees.Department_Id=departments.Department_id)
+RIGHT JOIN locations
+ON(departments.Location_id=locations.Location_id)
+GROUP BY departments.Department_Name

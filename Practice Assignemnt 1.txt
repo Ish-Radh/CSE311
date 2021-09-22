@@ -1,0 +1,76 @@
+1)
+SELECT title
+FROM movie
+WHERE movie.director ='Steven Spielberg'
+
+2)
+SELECT DISTINCT year
+FROM movie
+JOIN
+rating
+ON(movie.mID=rating.mID)
+WHERE rating.stars IN(4,5) 
+ORDER BY year ASC
+
+3)
+SELECT title
+FROM movie
+LEFT JOIN
+rating
+ON(movie.mID=rating.mID)
+WHERE rating.stars IS NULL
+
+4)SELECT reviewer.name
+FROM rating
+JOIN
+reviewer
+ON(rating.rID=reviewer.rID)
+WHERE ratingDate IS NULL
+
+5)
+SELECT reviewer.name,movie.title,rating.stars,rating.ratingDate
+FROM movie
+JOIN
+rating
+ON(movie.mID=rating.mID)
+JOIN 
+reviewer
+ON(rating.rID=reviewer.rID)
+ORDER BY reviewer.name ASC,movie.title ASC,rating.stars ASC
+
+8)SELECT movie.title,(MAX(r1.stars)-MIN(r1.stars)) AS "RATING SPREAD"
+FROM movie
+JOIN rating r1
+ON(R1.mID=movie.mID)
+JOIN reviewer re1
+ON(re1.rID=r1.rID)
+GROUP BY movie.mID
+ORDER BY "RATING SPREAD" DESC,movie.title ASC
+
+9)SELECT ABS(MAXB1980.m_avg-MAXA1980.m_avg) AS Difference
+
+FROM(
+    SELECT AVG(avg1) as m_avg
+    FROM(
+SELECT AVG(r1.stars) AS "avg1"
+FROM movie
+JOIN rating r1
+WHERE r1.mID=movie.mID AND movie.year<1980
+GROUP BY movie.mID) AS BEFORE_1980) AS MAXB1980,
+(
+    SELECT AVG(avg2) as m_avg
+    FROM(
+SELECT AVG(r1.stars) as 'avg2'
+FROM movie
+JOIN rating r1
+WHERE r1.mID=movie.mID AND movie.year>1980
+GROUP BY movie.mID) AS AFTER_1980) AS MAXA1980
+
+10)
+SELECT re1.name AS NAME
+FROM rating r1
+JOIN
+reviewer re1
+ON(r1.rID=re1.rID)
+GROUP BY re1.rID
+HAVING COUNT(re1.rID)>=3

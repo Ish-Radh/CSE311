@@ -1,0 +1,30 @@
+LAB-WEEK(3)-LEC-1
+
+1)
+SELECT employees.Last_Name,employees.Job_Id,Hire_Date AS 'Start Date' 
+FROM employees
+WHERE Hire_Date BETWEEN '1998-02-20'AND '1998-05-01'
+ORDER BY Hire_Date ASC
+
+2)
+SELECT employees.Last_Name, employees.Department_ID
+FROM employees
+WHERE Department_ID IN (20, 50)
+ORDER BY Last_Name
+
+LAB-WEEK(3)-LEC-2
+1)
+SELECT employees.Last_Name,Hire_Date ,YEAR(Hire_Date),MONTH(Hire_Date),DAY(Hire_Date)
+FROM employees
+WHERE YEAR(Hire_Date)=1994
+
+2)
+SELECT employees.Last_Name,employees.Salary,employees.Comission_pct
+FROM employees
+WHERE Comission_pct IS NOT NULL
+ORDER BY SALARY,Comission_pct DESC
+
+3)
+SELECT employees.Last_Name
+FROM employees
+WHERE Last_Name LIKE '%a%' AND Last_Name LIKE '%e%'

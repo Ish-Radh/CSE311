@@ -1,0 +1,32 @@
+1)
+SELECT departments.Department_Name 
+FROM employees
+LEFT JOIN departments
+ON (employeeS.Department_Id=departments.Department_id)
+GROUP BY departments.Department_Name
+HAVING AVG(Salary)=(
+SELECT MAX(AVGS)
+FROM (
+SELECT departments.Department_Name ,AVG(Salary) AS AVGS
+FROM employees
+LEFT JOIN departments
+ON (employeeS.Department_Id=departments.Department_id)
+GROUP BY departments.Department_Name) AS AVG_INFO)
+
+
+
+2)
+SELECT employee_id, last_name, job_id, salary
+FROM employees
+WHERE salary < SOME
+(SELECT salary
+FROM employees
+WHERE job_id LIKE 'IT_PROG')
+
+SELECT employees.Employee_Id,employees.Last_Name,employees.Job_Id,employees.Salary
+FROM employees
+WHERE SALARY < (
+SELECT salary
+FROM employees
+WHERE job_id LIKE 'IT_PROG'
+LIMIT 1)

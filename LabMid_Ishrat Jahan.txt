@@ -1,0 +1,96 @@
+1)
+CREATE TABLE scheduled_charge(
+   account_number VARCHAR(15) NOT NULL PRIMARY KEY,
+   half_yearly_charge INT NOT NULL,
+   inflation_rate DECIMAL (4, 2),
+   additional_rate DECIMAL (4, 2),      
+   
+);
+
+
+2)
+INSERT INTO scheduled_charge (account_number, half_yearly_charge, inflation_rate, additional_rate)
+VALUES ('A-305','200','5.67','0.19');
+
+INSERT INTO scheduled_charge (account_number, half_yearly_charge, inflation_rate, additional_rate)
+VALUES ('A-201','100','0','0');
+
+INSERT INTO scheduled_charge (account_number, half_yearly_charge, inflation_rate, additional_rate)
+VALUES ('L-11','300','6.68','3');
+
+INSERT INTO scheduled_charge (account_number, half_yearly_charge, inflation_rate, additional_rate)
+VALUES ('L-14','300','5.69','2.5');
+
+3)
+SELECT account.account_number, ROUND((account.balance - 2*scheduled_charge.half_yearly_charge + (account.balance*scheduled_charge.inflation_rate / 100) + (account.balance*scheduled_charge.additional_rate / 100)),1) AS Adjusted_acc_info
+FROM account 
+JOIN scheduled_charge
+ON (account.account_number=scheduled_charge.account_number)
+
+4)
+SELECT AVG(balance),depositor.customer_name
+FROM account
+JOIN depositor
+ON(account.account_number=depositor.account_number)
+GROUP BY depositor.customer_name
+HAVING COUNT(depositor.customer_name) >=2
+
+5)
+SELECT branch.branch_name,MIN((loan.amount/account.balance)*100) AS 'LDR'
+FROM account
+JOIN branch 
+ON(account.branch_name=branch.branch_name)
+JOIN loan
+ON(loan.branch_name=branch.branch_name)
+JOIN depositor
+ON(depositor.account_number=account.account_number)
+
+6)
+SELECT AVG(loan.amount) AS 'AVERAGE Amount'
+FROM borrower
+JOIN loan
+ON(borrower.loan_number=loan.loan_number)
+WHERE borrower.customer_name LIKE 'J%'
+
+7)
+
+
+SELECT DISTINCT customer.customer_name,customer.customer_street
+FROM account
+JOIN depositor
+ON(depositor.account_number=account.account_number)
+JOIN loan
+ON(loan.branch_name=account.branch_name)
+JOIN customer
+ON(depositor.customer_name=customer.customer_name)
+JOIN borrower
+ON(customer.customer_name=borrower.customer_name)
+WHERE depositor.customer_name=borrower.customer_name
+
+8)
+SELECT SUM(branch.assets) AS "Total Asset", SUM(account.balance) AS "Total Balance" ,SUM(loan.amount) AS "Total laon"
+FROM account
+JOIN branch 
+ON (branch.branch_name=account.branch_name)
+JOIN loan
+ON(loan.branch_name=branch.branch_name)
+
+9)
+SELECT customer.customer_name
+FROM account
+JOIN branch 
+ON (branch.branch_name=account.branch_name)
+JOIN customer
+ON(branch.branch_city=customer.customer_city)
+WHERE customer.customer_city=branch.branch_city
+
+10)
+SELECT customer.customer_name,customer.customer_city,account.account_number,borrower.loan_number
+FROM account
+JOIN depositor
+ON(account.account_number=depositor.account_number)
+RIGHT JOIN borrower
+ON(depositor.customer_name=borrower.customer_name)
+RIGHT JOIN customer
+ON (customer.customer_name=depositor.customer_name)
+ORDER BY customer.customer_name ASC
